@@ -1,0 +1,30 @@
+; supported format
+$ORIGIN example.edu.
+$TTL 86400
+@   IN  SOA ns1.example.edu. admin.example.edu. (
+            2024071501 ; Serial
+            86400      ; Refresh
+            7200       ; Retry
+            3600000    ; Expire
+            86400 )    ; Minimum TTL
+
+    IN  NS      ns1.example.edu.
+    IN  NS      ns2.example.edu.
+
+    IN  MX  10  mail.example.edu.
+
+ns1 IN  A       192.0.2.4
+ns2 IN  A       192.0.2.5
+
+www.example.edu.     IN  A       192.0.2.6
+blog.example.edu.    IN  A       192.0.2.7
+shop.example.edu.    IN  A       192.0.2.8
+
+sales.example.edu.   IN  CNAME   shop
+support.example.edu. IN  CNAME   helpdesk
+
+; Subdomain records
+$ORIGIN dev.example.edu.
+@       IN  NS  ns1.dev
+ns1     IN  A   192.0.2.9
+test    IN  A   192.0.2.10

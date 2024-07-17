@@ -1,0 +1,19 @@
+; supported format
+$ORIGIN .
+$TTL 86400
+example.at.   IN  SOA ns1.example.at. admin.example.at. (
+            2024071501 ; Serial
+            3600       ; Refresh
+            1800       ; Retry
+            1209600    ; Expire
+            86400 )    ; Minimum TTL
+
+    IN  NS      ns1.example.at.
+    IN  NS      ns2.example.at.
+
+    IN  MX  10  mail
+
+$ORIGIN example.at.
+ns1 IN  A       192.0.2.1
+ns2 IN  A       192.0.2.2
+www IN  A       192.0.2.6

@@ -1,0 +1,22 @@
+; supported format
+$TTL 14400
+example.org.  IN  SOA ns1.example.org. admin.example.org. (
+                2024071501 ; Serial
+                14400      ; Refresh
+                3600       ; Retry
+                2419200    ; Expire
+                14400 )    ; Minimum TTL
+
+example.org.  IN  NS      ns1.example.org.
+example.org.  IN  NS      ns2.example.org.
+
+example.org.  IN  MX  10  mail.example.org.
+
+ns1.example.org. IN  A    203.0.113.1
+ns2.example.org. IN  A    203.0.113.2
+www.example.org. IN  A    203.0.113.3
+mail.example.org. IN  A   203.0.113.4
+api.example.org. IN  A    203.0.113.5
+
+example.org.  IN  TXT    "v=spf1 include:example.org ~all"
+_dmarc.example.org. IN  TXT  "v=DMARC1; p=none; rua=mailto:dmarc-reports@example.org"
