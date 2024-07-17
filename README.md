@@ -15,7 +15,7 @@ To execute the `named-checkzone` command, the logic needs to parse the zone name
 sudo apt install python3 bind9utils
 
 # Copy the code to your machine
-git clone https://github.com/l3fuex/pyzonegit
+git clone https://github.com/l3fuex/pyZoneGit
 
 # Make the script executable
 chmod +x pyZonGit/pyZoneGit.py
