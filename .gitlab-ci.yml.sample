@@ -1,0 +1,57 @@
+stages:
+  - clone
+  - test
+  - deploy
+
+variables:
+  # Namesever relevant stuff:
+  SSH_USER: ""         # ssh User to connect to the server
+  # SSH_KEY needs to be defined through CI/CD Variables in gitlab (base64 encoded)
+  NAMESERVER: ""       # Nameserver FQDN
+  DEPLOY_PATH: ""      # Path to the Zonefile directory
+  # Git repo relevant stuff:
+  REPO_URL1: ""        # URL to pyZoneGit Repo
+  REPO_URL2: ""        # URL to Zonefile Repo
+  
+clone-job:
+  stage: clone
+  tags:
+    - my_tag
+  image: bitnami/git:2.45.2
+  script:
+    - git clone $REPO_URL1
+  artifacts:
+    paths:
+      - pyZoneGit/pyZoneGit.py
+
+test-job:
+  stage: test
+  tags:
+    - my_tag
+  image: python:3.12.4-bookworm
+  before_script:
+    - apt-get update -y && apt-get install bind9utils -y
+  script:
+    - python3 pyZoneGit/pyZoneGit.py
+
+deploy-job:
+  stage: deploy
+  tags:
+    - my_tag
+  before_script:
+      - apt-get update -y && apt-get install openssh-client -y
+      - eval $(ssh-agent -s)
+      - chmod 400 $SSH_KEY
+      - base64 -d $SSH_KEY | ssh-add -
+  script:
+    - >
+      ssh -o StrictHostKeyChecking=no $SSH_USER@$NAMESERVER "
+        if [ -d $DEPLOY_PATH/.git ]; then
+          cd $DEPLOY_PATH
+          git config --global --add safe.directory $DEPLOY_PATH
+          git pull
+        else
+          git clone $REPO_URL2 $DEPLOY_PATH
+        fi
+        sudo rndc reload
+      "
