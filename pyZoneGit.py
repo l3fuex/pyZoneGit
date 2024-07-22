@@ -132,7 +132,7 @@ def exec_cmd(cmd):
 
 def read_file(zonefile, revision):
     """
-    ead the content of a file at a specific revision.
+    Read the content of a file at a specific revision.
 
     Args:
         zonefile (str: Path to the zone file.
