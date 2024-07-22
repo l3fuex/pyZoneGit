@@ -30,7 +30,7 @@ test-job:
     - my_tag
   image: python:3.12.4-bookworm
   before_script:
-    - apt-get update -y && apt-get install bind9utils -y
+    - 'command -v named-checkzone >/dev/null || ( apt-get update -y && apt-get install bind9utils -y )'
   script:
     - python3 pyZoneGit/pyZoneGit.py
 
@@ -39,7 +39,7 @@ deploy-job:
   tags:
     - my_tag
   before_script:
-      - apt-get update -y && apt-get install openssh-client -y
+      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
       - eval $(ssh-agent -s)
       - chmod 400 $SSH_KEY
       - base64 -d $SSH_KEY | ssh-add -

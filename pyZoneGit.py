@@ -128,6 +128,8 @@ def exec_cmd(cmd):
             cpe_error.returncode,
             cpe_error.stderr.strip() or cpe_error.stdout.strip()
         )
+    except FileNotFoundError:
+        raise FileNotFoundError
 
 
 def read_file(zonefile, revision):
@@ -171,7 +173,7 @@ def get_all_zonefiles():
     cmd = ["git", "ls-files"]
 
     result = exec_cmd(cmd)
-    file_list = result.stdout.split("\n")
+    file_list = result.stdout.splitlines()
     file_list = list(filter(None, file_list))
 
     pattern = re.compile(r"^db\.|\.db$|\.zone$|\.rev$|\.rpz$")
@@ -208,7 +210,7 @@ def get_changed_zonefiles(repo_path):
         cmd += ["HEAD~1", "HEAD"]
 
     result = exec_cmd(cmd)
-    file_list = result.stdout.split("\n")
+    file_list = result.stdout.splitlines()
     file_list = list(filter(None, file_list))
 
     pattern = re.compile(r"^db\.|\.db$|\.zone$|\.rev$|\.rpz$")
@@ -263,7 +265,7 @@ def get_repo_path():
 
     try:
         result = exec_cmd(cmd)
-        repo_path = result.stdout.split("\n")
+        repo_path = result.stdout.splitlines()
         logging.info("Repo path is: %s", repo_path[0])
         return repo_path[0]
     except CommandExecutionError:
@@ -323,6 +325,9 @@ def check_zone(zonename, zonefile):
     except CommandExecutionError as error:
         logging.error("Errors in validating zone %s:\n%s", zonename, error.output)
         return error.returncode
+    except FileNotFoundError:
+        logging.error("Please install the bind9utils package.")
+        sys.exit(1)
 
 
 def parse_serial(data):
