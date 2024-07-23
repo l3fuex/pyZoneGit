@@ -48,7 +48,6 @@ deploy-job:
       ssh -o StrictHostKeyChecking=no $SSH_USER@$NAMESERVER "
         if [ -d $DEPLOY_PATH/.git ]; then
           cd $DEPLOY_PATH
-          git config --global --add safe.directory $DEPLOY_PATH
           git pull
         else
           git clone $REPO_URL2 $DEPLOY_PATH
