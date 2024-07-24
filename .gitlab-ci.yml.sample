@@ -8,6 +8,7 @@ variables:
   SSH_USER: ""         # ssh User to connect to the server
   # SSH_KEY needs to be defined through CI/CD Variables in gitlab (base64 encoded)
   NAMESERVER: ""       # Nameserver FQDN
+  TEMP_PATH: ""        # Path to temp Zonefile directory
   DEPLOY_PATH: ""      # Path to the Zonefile directory
   # Git repo relevant stuff:
   REPO_URL1: ""        # URL to pyZoneGit Repo
@@ -46,11 +47,12 @@ deploy-job:
   script:
     - >
       ssh -o StrictHostKeyChecking=no $SSH_USER@$NAMESERVER "
-        if [ -d $DEPLOY_PATH/.git ]; then
-          cd $DEPLOY_PATH
+        if [ -d $TEMP_PATH/.git ]; then
+          cd $TEMP_PATH
           git pull
         else
-          git clone $REPO_URL2 $DEPLOY_PATH
+          git clone $REPO_URL2 $TEMP_PATH
         fi
+        cp $TEMP_PATH/* $DEPLOY_PATH
         sudo rndc reload
       "
