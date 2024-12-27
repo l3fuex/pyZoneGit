@@ -8,7 +8,7 @@ To execute the `named-checkzone` command, the logic needs to parse the zone name
 - Python 3.x
 - bind9utils package
 
-## Insallation
+## Installation
 
 ```bash
 # Install dependencies
