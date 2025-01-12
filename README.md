@@ -47,3 +47,5 @@ ERROR    Serial number was not incremented
 ### CI/CD Pipeline
 Due to the fact that the validation of the changes and the usage of the script as a pre-commit hook rely completely on the responsible administrators, an additional check should be carried out somewhere in the workflow where it can't be overridden. A CI/CD pipeline, which automates software testing and deployment tasks, would be one way to achieve that. Therefore, the program is also designed to work when triggered as a script in such a pipeline. See the `.gitlab-ci.yml.sample` file for an example of how such a pipeline could look like in gitlab.
 
+## License
+This software is provided under the [Creative Commons BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license.
